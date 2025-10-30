@@ -9,7 +9,7 @@ export default async function ExperienceDetailPage({
 }: {
   params: { id: string }; // We define the required params inline
 }) {
-  const { id } = params;
+  const { id } = await params;
   let experience;
 
   try {
