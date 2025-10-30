@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import ExperienceClient from "./ExperienceClient"; // <-- NEW: Import our client component
 
 interface DetailPageProps {
-  params: Promise<{ id: string }>;
+  params: {
+    id: string;
+  };
 }
 
 // This page.tsx STAYS a Server Component.
