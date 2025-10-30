@@ -1,15 +1,12 @@
 // app/checkout/page.tsx
-"use client"; // <-- Still needs to be a Client Component
-
-// We don't import Suspense here anymore
+"use client"; // <-- Must be a Client Component
+import { Suspense } from "react";
 import { useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import { validatePromoCode, createBooking } from "@/services/apiService";
-import CheckoutWrapper from "./CheckoutWrapper"; // <-- NEW: Import the wrapper
 
-// --- We rename the main function to CheckoutContent ---
-function CheckoutContent() {
+export default function CheckoutPage() {
   const router = useRouter(); // For redirecting
   const searchParams = useSearchParams(); // For reading URL params
 
@@ -76,6 +73,7 @@ function CheckoutContent() {
       return;
     }
 
+    // ... inside handleSubmit ...
     setIsLoading(true);
     try {
       await createBooking({
@@ -97,16 +95,16 @@ function CheckoutContent() {
       }
 
       // Redirect to the result page with the failure status
+      // We encode the message to make it safe for a URL
       router.push(
         `/result?status=failure&message=${encodeURIComponent(errorMessage)}`
       );
     }
-    // We leave the final setIsLoading(false) outside the try/catch if we didn't navigate
-    // Since we navigate inside, we can remove it, but for safety in case of error before navigation:
-    // setIsLoading(false); // Can be kept or removed since navigation happens inside try/catch
+    // We can remove setIsLoading(false) since we're navigating away
+    // setIsLoading(false); // No longer needed
+    setIsLoading(false);
   };
 
-  // --- REST OF THE UI (Form/Summary) ---
   return (
     <main className="container mx-auto max-w-4xl px-4 py-12">
       <h1 className="mb-8 text-4xl font-bold text-brand-dark">
@@ -121,6 +119,7 @@ function CheckoutContent() {
               Your Information
             </h2>
 
+            {/* Use our new handleSubmit function */}
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <div>
                 <label
@@ -232,12 +231,13 @@ function CheckoutContent() {
             </div>
 
             <div className="mt-6">
+              {/* This button will trigger the form's onSubmit */}
               <Button
                 type="submit"
                 size="large"
                 className="w-full"
                 onClick={handleSubmit}
-                disabled={isLoading}
+                disabled={isLoading} // <-- Disable on load
               >
                 {isLoading ? "Booking..." : "Confirm & Book"}
               </Button>
@@ -252,9 +252,4 @@ function CheckoutContent() {
       </div>
     </main>
   );
-}
-// --- FINAL EXPORT ---
-// This is the new, final export that wraps the content in Suspense
-export default function CheckoutPage() {
-  return <CheckoutWrapper />;
 }
