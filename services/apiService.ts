@@ -78,7 +78,7 @@ export async function createBooking(bookingData: {
   finalPrice: number;
 }): Promise<{
   message: string;
-  booking: any;
+  booking: Booking;
 }> {
   const res = await fetch(`${API_URL}/bookings`, {
     method: "POST",

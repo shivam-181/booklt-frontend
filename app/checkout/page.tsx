@@ -1,6 +1,6 @@
 // app/checkout/page.tsx
 "use client"; // <-- Must be a Client Component
-
+import { Suspense } from "react";
 import { useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Button from "@/components/Button";
