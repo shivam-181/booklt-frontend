@@ -1,36 +1,175 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+✈️ Booklt: Experiences & Slots Booking Application
 
-## Getting Started
+This project is a complete end-to-end full-stack web application developed to fulfill the requirements of the Internshala Fullstack Development assignment. It simulates a travel booking platform where users can browse experiences, select available time slots, and complete a secure booking.
 
-First, run the development server:
+🎯 Technical & Functional Highlights
 
-```bash
+Category
+
+Requirement
+
+Solution Implemented
+
+Frontend
+
+Framework, Styling
+
+Next.js (App Router), TypeScript, TailwindCSS
+
+User Flow
+
+Home → Details → Checkout → Result
+
+Fully implemented with responsive UI.
+
+Data Handling
+
+Dynamic Slot Management
+
+Backend decrements available spots in MongoDB upon successful booking. Prevents double-booking.
+
+APIs
+
+Promo Validation
+
+POST /api/promo/validate with hardcoded logic (e.g., SAVE10).
+
+State
+
+Clean Implementation
+
+Uses useSearchParams for data passing and useState/useMemo for client-side calculations (price, discount).
+
+🛠️ Technology Stack
+
+Component
+
+Technology
+
+Details
+
+Frontend
+
+Next.js 14+ (App Router) & TypeScript
+
+Hosted on Vercel.
+
+Styling
+
+TailwindCSS 3.x & Custom Design Tokens
+
+Used for a responsive, mobile-first design matching the Figma spec.
+
+Backend
+
+Node.js & Express
+
+Hosted on Render.
+
+Database
+
+MongoDB (Atlas) & Mongoose
+
+Used for durable storage of Experience, Slots, and Booking records.
+
+⚙️ How to Run Locally
+
+This project is split into two folders: booklt-backend and booklt-frontend. Both must be running concurrently.
+
+Prerequisites
+
+Node.js (LTS) installed.
+
+MongoDB Atlas: A live connection string is required.
+
+1. Backend Setup (booklt-backend folder)
+
+Step
+
+Command
+
+Description
+
+1. Install
+
+npm install
+
+Installs dependencies (Express, Mongoose, dotenv).
+
+2. Environment
+
+Create a .env file
+
+Add PORT=8000 and MONGO_URI=<YOUR_ATLAS_CONNECTION_STRING>
+
+3. Seed Data
+
+npm run seed:import
+
+Crucial: Loads sample experiences and slots into the database.
+
+4. Start API
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Starts the server on http://localhost:8000 (auto-restarts).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Frontend Setup (booklt-frontend folder)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Step
 
-## Learn More
+Command
 
-To learn more about Next.js, take a look at the following resources:
+Description
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+npm install
 
-## Deploy on Vercel
+Installs dependencies (Next.js, Tailwind, etc.).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Environment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Create a .env.local file
+
+Add NEXT_PUBLIC_API_URL=http://localhost:8000/api
+
+3. Start App
+
+npm run dev
+
+Starts the Next.js development server on http://localhost:3000.
+
+🌐 Live Application Links (Mandatory Submission)
+
+Component
+
+Platform
+
+Status
+
+URL
+
+Frontend App
+
+Vercel
+
+LIVE
+
+[\[PASTE YOUR FINAL VERCEL URL HERE\]](https://booklt-fresh-deploy.vercel.app/)
+
+Backend API
+
+Render
+
+LIVE
+
+[\[PASTE YOUR FINAL RENDER API URL HERE\]](https://booklt-api.onrender.com)
+
+Source Code
+
+GitHub Repository
+
+Public
+
+[\[PASTE YOUR GITHUB REPO LINK HERE\]](https://github.com/shivam-181/booklt-frontend)
