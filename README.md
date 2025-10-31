@@ -140,7 +140,7 @@ npm run dev
 
 Starts the Next.js development server on http://localhost:3000.
 
-🌐 Live Application Links (Mandatory Submission)
+🌐 Live Application Links
 
 Component
 
@@ -156,20 +156,18 @@ Vercel
 
 LIVE
 
-[\[PASTE YOUR FINAL VERCEL URL HERE\]](https://booklt-fresh-deploy.vercel.app/)
-
+| **Frontend App** | **Vercel** | LIVE | [https://booklt-fresh-deploy.vercel.app/](https://booklt-fresh-deploy.vercel.app/) |
 Backend API
 
 Render
 
 LIVE
 
-[\[PASTE YOUR FINAL RENDER API URL HERE\]](https://booklt-api.onrender.com)
-
+| **Backend API** | **Render** | LIVE | [https://booklt-api.onrender.com](https://booklt-api.onrender.com) |
 Source Code
 
 GitHub Repository
 
 Public
 
-[\[PASTE YOUR GITHUB REPO LINK HERE\]](https://github.com/shivam-181/booklt-frontend)
+| **Source Code** | **GitHub Repository** | Public | [booklt-frontend GitHub Repo](https://github.com/shivam-181/booklt-frontend) |
