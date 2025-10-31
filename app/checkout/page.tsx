@@ -1,14 +1,16 @@
 // app/checkout/page.tsx
-"use client"; // <-- Must be a Client Component
-import { Suspense } from "react";
+"use client";
+
 import { useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import { validatePromoCode, createBooking } from "@/services/apiService";
+import { Suspense } from "react"; // NEW: Import Suspense here
 
-export default function CheckoutPage() {
-  const router = useRouter(); // For redirecting
-  const searchParams = useSearchParams(); // For reading URL params
+// We rename the main function to CheckoutContent to prevent the build error
+function CheckoutContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // --- 1. Read Data from URL ---
   const expId = searchParams.get("expId") || "";
@@ -22,7 +24,7 @@ export default function CheckoutPage() {
   const [promoCode, setPromoCode] = useState("");
 
   // --- 3. UI/Price State ---
-  const [discount, setDiscount] = useState(0); // Flat discount amount
+  const [discount, setDiscount] = useState(0);
   const [promoMessage, setPromoMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState("");
@@ -33,7 +35,7 @@ export default function CheckoutPage() {
     return total < 0 ? 0 : total;
   }, [expPrice, discount]);
 
-  // --- 5. Handle Promo Code Validation ---
+  // --- 5. Handle Promo Code Validation (Code is unchanged) ---
   const handleApplyPromo = async () => {
     if (!promoCode) return;
     setIsLoading(true);
@@ -57,9 +59,9 @@ export default function CheckoutPage() {
     setIsLoading(false);
   };
 
-  // --- 6. Handle Final Booking Submission ---
+  // --- 6. Handle Final Booking Submission (Code is unchanged) ---
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Stop form from reloading page
+    e.preventDefault();
     setFormError("");
 
     if (!name || !email) {
@@ -73,7 +75,6 @@ export default function CheckoutPage() {
       return;
     }
 
-    // ... inside handleSubmit ...
     setIsLoading(true);
     try {
       await createBooking({
@@ -85,32 +86,28 @@ export default function CheckoutPage() {
         finalPrice: finalPrice,
       });
 
-      // --- SUCCESS! ---
       router.push("/result?status=success");
     } catch (err) {
-      // --- FAILURE! ---
       let errorMessage = "An unknown error occurred.";
       if (err instanceof Error) {
         errorMessage = err.message;
       }
 
-      // Redirect to the result page with the failure status
-      // We encode the message to make it safe for a URL
       router.push(
         `/result?status=failure&message=${encodeURIComponent(errorMessage)}`
       );
     }
-    // We can remove setIsLoading(false) since we're navigating away
-    // setIsLoading(false); // No longer needed
-    setIsLoading(false);
   };
 
+  // --- REST OF THE UI (Unchanged) ---
   return (
     <main className="container mx-auto max-w-4xl px-4 py-12">
+      {/* ... (UI structure is the same) ... */}
       <h1 className="mb-8 text-4xl font-bold text-brand-dark">
         Confirm your booking
       </h1>
 
+      {/* (Form content goes here) */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
         {/* --- LEFT SIDE: Form --- */}
         <div className="md:col-span-2">
@@ -118,8 +115,6 @@ export default function CheckoutPage() {
             <h2 className="text-xl font-semibold text-brand-dark">
               Your Information
             </h2>
-
-            {/* Use our new handleSubmit function */}
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <div>
                 <label
@@ -131,8 +126,8 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   id="name"
-                  value={name} // <-- Controlled component
-                  onChange={(e) => setName(e.target.value)} // <-- Set state
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-primary focus:ring-brand-primary"
                 />
@@ -148,8 +143,8 @@ export default function CheckoutPage() {
                 <input
                   type="email"
                   id="email"
-                  value={email} // <-- Controlled component
-                  onChange={(e) => setEmail(e.target.value)} // <-- Set state
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-primary focus:ring-brand-primary"
                 />
@@ -163,16 +158,16 @@ export default function CheckoutPage() {
                   <input
                     type="text"
                     id="promo"
-                    value={promoCode} // <-- Controlled component
-                    onChange={(e) => setPromoCode(e.target.value)} // <-- Set state
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="e.g. SAVE10"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-primary focus:ring-brand-primary"
                   />
                   <Button
-                    type="button" // <-- Important: not "submit"
+                    type="button"
                     variant="secondary"
                     className="flex-shrink-0"
-                    onClick={handleApplyPromo} // <-- Call validation
+                    onClick={handleApplyPromo}
                     disabled={isLoading}
                   >
                     Apply
@@ -231,13 +226,12 @@ export default function CheckoutPage() {
             </div>
 
             <div className="mt-6">
-              {/* This button will trigger the form's onSubmit */}
               <Button
                 type="submit"
                 size="large"
                 className="w-full"
                 onClick={handleSubmit}
-                disabled={isLoading} // <-- Disable on load
+                disabled={isLoading}
               >
                 {isLoading ? "Booking..." : "Confirm & Book"}
               </Button>
@@ -251,5 +245,15 @@ export default function CheckoutPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+// --- FINAL EXPORT ---
+// The page export now uses a Suspense wrapper to prevent prerendering errors
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div>Loading checkout...</div>}>
+      <CheckoutContent />
+    </Suspense>
   );
 }
